@@ -63,6 +63,9 @@ function update()
 		$("#item_inbox").css("display", "block");
 		$("#item_profile").css("display", "block");
 		
+		name = result.name.split(" ")[0];
+		$("#item_profile a").html(name);
+		
 		notification = parseInt(result.notifs.unseen_aggregated_count);
 		inbox = parseInt(result.inbox.unread_count);
 				
@@ -97,6 +100,8 @@ function update()
 		$("#item_notification").css("display", "none");
 		$("#item_inbox").css("display", "none");
 		$("#item_profile").css("display", "none");
+		
+		$("#item_profile a").html();
 		
 		$("#item_notification_count").css("display", "none");
 		$("#item_inbox_count").css("display", "none");	
