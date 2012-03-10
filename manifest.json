@@ -1,6 +1,6 @@
 {
   "name": "Quora Charm",
-  "version": "0.1",
+  "version": "1.2",
   "description": "Chrome extension for Quora.",
   "browser_action": {
     "default_icon": "images/icon_16.png",
