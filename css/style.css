@@ -1,0 +1,78 @@
+*
+{
+	padding: 0px;
+	margin: 0px;
+	color: #AAA;
+}
+
+a
+{
+	text-decoration: none;	
+}
+
+body
+{
+	font-family: "Helvetica Neue",Helvetica,Arial,default;
+    font-size: 80%;
+}
+
+.container
+{
+	min-width:400px;
+	min-height: 400px;
+	background-color: #F7F7F7;
+	border-radius: 10px;
+}
+
+.header
+{
+    background: none repeat scroll 0 0 #384042;
+    min-height: 41px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.header .header_logo
+{
+	background: url("http://qsf.cf.quoracdn.net/-ad7f0e6f6fdd7086.gif") no-repeat transparent center top;
+	background-color: #A82400;
+	border-top-left-radius: 10px;
+	float:left;
+	height: 41px;
+	width: 82px;
+	cursor: pointer;
+}
+
+.header .menu
+{
+	float:right;
+}
+
+.content
+{
+	padding: 10px;
+}
+
+.menu ul
+{
+	list-style: none outside none;
+	margin-right: 10px	
+}
+
+.menu li
+{
+	float:left;
+	padding: 13px 7px;
+	display: none;
+}
+
+.menu a
+{
+    color: #B9BBBC;
+    font-weight: bold;
+}
+
+.menu a:hover
+{
+    color: #FAFAFA;
+}
