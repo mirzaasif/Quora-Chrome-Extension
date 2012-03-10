@@ -46,11 +46,6 @@ function search()
 	hide();
 }
 
-function showNotifications()
-{
-	
-}
-
 function update()
 {
 	if(result != null)
