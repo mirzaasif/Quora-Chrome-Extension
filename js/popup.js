@@ -109,8 +109,7 @@ function showNotifications()
 	for (i = 0; i < result.notifs.unseen.length && i < 2; i++)
 	{
 		html += "<div class='separator'>&nbsp;</div>";
-		html += "<div>"+"<a href=\"http://www.quora.com/Animesh-Kumar-1\" routing=\"q://user/(1073247)\">Animesh Kumar</a> wrote an answer for the question <a action=\"notificationSelected:\" href=\"http://www.quora.com/Codesprint-Quora/What-was-it-like-to-participate-in-Codesprint-Quora-2012/answer/Animesh-Kumar-1?__snids__=36380858#ans1069374\" arg=\"{&quot;aid&quot;: 1069374, &quot;notif_key&quot;: 7, &quot;snid&quot;: 36380858}\">Codesprint Quora:&nbsp;What was it like to participate in Codesprint Quora 2012?</a>"+"</div>"
-		//html += "<div>"+result.notifs.unseen[i]+"</div>";
+		html += "<div>"+result.notifs.unseen[i]+"</div>";
 		html += "<div class='separator'>&nbsp;</div>";
 	}	
 	
