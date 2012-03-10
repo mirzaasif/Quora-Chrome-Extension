@@ -65,7 +65,7 @@ function update()
 		
 		notification = parseInt(result.notifs.unseen_aggregated_count);
 		inbox = parseInt(result.inbox.unread_count);
-		
+				
 		if(inbox > 0)
 		{
 			$("#item_inbox_count").css("display", "block");
