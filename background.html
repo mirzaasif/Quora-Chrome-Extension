@@ -1,13 +1,17 @@
 <html>
 	<script>
+	
 	var result = null;
+	var activeTabId = null;
+	var activeTab = null;
+	
 	function checkLogin()
 	{
 		var xhr = new XMLHttpRequest();
 		xhr.open("GET", "http://api.quora.com/api/logged_in_user?fields=inbox,notifs", true);
 		xhr.onreadystatechange = function() {
 	  		if (xhr.readyState == 4) {
-	    		try
+    		    try
 	    		{
 	    			result = JSON.parse(xhr.responseText.match(/{.*}/));
 	    		}catch(ex)
@@ -17,17 +21,16 @@
 	    		}finally
 	    		{
 	    			update();
-	    		}
+	    			setTimeout("checkLogin();", 3000);
+	    		}  	   
 	  		}
 		}
 		xhr.send();
-		alert("call");
 	}	
 	
 	function userNotLoggedIn()
 	{
-		//update to show not login
-		alert("not logged in");
+		updateBadgeText("");
 	}
 	
 	function userLoggedIn()
@@ -37,7 +40,7 @@
 			return; 
 		}
 		
-		notifications = parseInt(result.notifs.unseen_count);
+		notifications = parseInt(result.notifs.unseen_aggregated_count);
 		inbox = parseInt(result.inbox.unread_count);
 		total = notifications + inbox;
 		
@@ -105,7 +108,7 @@
 	
 	function postToQuora(url)
 	{
-		link = "http://www.quora.com/board/bookmarklet?v=1&url="+encodeURIComponent(url);
+		link = "http://www.quora.com/board/bookmarklet?v=1&url="+encodeURIComponent(url);	
 		window.open(link,'_blank','toolbar=0,scrollbars=no,resizable=1,status=1,width=430,height=400')
 	}
 	
@@ -118,10 +121,53 @@
 	
 	function run()
 	{
+		chrome.extension.onRequest.addListener(
+		function(request, sender, sendResponse) {
+			
+		    if (request.data == "login")
+		    {
+		      sendResponse({"result": result});
+		    }
+		    else if(request.data == "search")
+		    {
+		    	searchOnQuora(request.query);
+		    }
+		    else if(request.data == "post")
+		    {
+		    	if(activeTabId != null)
+		    	{
+		    		chrome.tabs.get(activeTabId, function(tab)
+			    		{ 
+			    			if(tab == null)
+			    			{
+			    				if(activeTab != null)
+			    				{
+			    					postToQuora(activeTab.url);
+			    				}else
+			    				{
+			    					alert("Error: Could not perform requested task.");
+			    				}
+			    			}else
+			    			{
+			    				activeTab = tab;
+			    				postToQuora(tab.url);
+			    			}
+			    			
+			    		}
+		    		);
+		    	}
+		    }
+		    else
+		    {
+		    	alert(request.data);
+		     	sendResponse({});
+		    }
+		    
+		});
 		createContextMenu();
 		checkLogin();
+		chrome.tabs.onActiveChanged.addListener(function(tabId, selectInfo){ activeTabId = tabId;});
 	}
-
 	run();
 	</script>
 </html>

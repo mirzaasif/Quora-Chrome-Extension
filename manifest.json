@@ -3,15 +3,21 @@
   "version": "0.1",
   "description": "Chrome extension for Quora.",
   "browser_action": {
-    "default_icon": "images/icon.png",
+    "default_icon": "images/icon_16.png",
     "default_title": "Quora Charm",
     "popup": "popup.html"
   },
   "permissions": [
-    "http://api.quora.com/",
+    "*://*.quora.com/",
     "background",
-    "contextMenus"
+    "contextMenus",
+    "tabs"
   ],
-   "background_page": "background.html"
+   "background_page": "background.html",
+  "icons": {
+    "16": "images/icon_16.png",
+    "48": "images/icon_48.png",
+    "128": "images/icon_48.png"
+  }
 }
 

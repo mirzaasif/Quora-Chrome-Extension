@@ -19,7 +19,7 @@ body
 .container
 {
 	min-width:400px;
-	min-height: 400px;
+	min-height: 150px;
 	background-color: #F7F7F7;
 	border-radius: 10px;
 }
@@ -63,16 +63,116 @@ body
 {
 	float:left;
 	padding: 13px 7px;
-	display: none;
 }
 
 .menu a
 {
     color: #B9BBBC;
     font-weight: bold;
+    position: relative;
 }
 
 .menu a:hover
 {
     color: #FAFAFA;
+}
+
+.search
+{
+	text-align: center;
+	padding: 10px;
+}
+
+.search input
+{
+	width:95%;
+	height:30px;
+	font-size:14px;
+	padding: 0px 4px;
+}
+.post
+{
+	padding:10px;
+}
+.button
+{
+    background-color: #19558D;
+    background-image: url("images/-adc3ffa834bd19c3.gif");
+    border-bottom: 1px solid #062C50;
+    border-color: #19558D #19558D #062C50;
+    color: #FFFFFF;
+    min-width: 40px;
+    text-shadow: 0 1px #19558D;
+    border-color: #BBBBBB #BBBBBB #999999;
+    border-radius: 3px 3px 3px 3px;
+    border-style: solid;
+    border-width: 1px;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 0.9em;
+    font-weight: bold;
+    padding: 3px 10px;
+    text-align: center; 
+}
+
+.count
+{
+    background: none repeat scroll 0 0 #A82400;
+    border-bottom: 1px solid #920000;
+    font-size: 0.8em;
+    line-height: 1.2em;
+    margin: 0;
+    padding: 1px 5px;
+    position: absolute;
+    right: -10px;
+    top: -5px;
+    border-radius: 10px 10px 10px 10px;
+    color: #FFF;
+}
+
+.notifications
+{
+	margin :10px 10px 5px 10px;
+	padding: 5px;
+	display:none;
+	border: 1px solid #19558D;
+	background-color: #D6E4F0;
+	border-radius: 5px;
+	color: #333;
+}
+.notifications .title
+{
+	font-weight:bold;
+	border-bottom: 1px solid #666;
+}
+.notifications .title
+{
+	color:#333;
+}
+.notifications a
+{
+	color: #19558D;
+}
+
+.notifications a:hover
+{
+	text-decoration:underline;
+}
+
+.notification_content
+{
+	color:#333;
+	padding: 5px 0px;
+}
+
+.notification_content *
+{
+	color:#333;
+}
+
+.separator
+{
+	font-size:1px;
+	line-height:2px;
+	height:4px;
 }
