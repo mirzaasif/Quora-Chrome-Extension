@@ -119,7 +119,13 @@ function showNotifications()
 	$("#notification_content a").each(
 		function()
 		{
-			$(this).click(function(){openFullLink($(this).attr("href"))});
+			if($(this).attr("href") == "#") //this element for action button. we dont need it in extension
+			{
+				$(this).remove();
+			}else
+			{
+				$(this).click(function(){openFullLink($(this).attr("href"))});	
+			}
 		}
 	);
 }
@@ -145,5 +151,4 @@ function onLoad()
   		result = response.result;
 	  	update();
 	});
-	chrome.browserAction.setTitle({"title": "Quora Charm"})
 }
