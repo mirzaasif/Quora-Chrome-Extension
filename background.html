@@ -63,15 +63,22 @@
 		
 		notifications = parseInt(result.notifs.unseen_aggregated_count);
 		inbox = parseInt(result.inbox.unread_count);
-		total = notifications + inbox;
 		
-		if(total > 0)
+		badge = "";
+		
+		if(notifications > 0 && inbox > 0)
 		{
-			updateBadgeText(total.toString());	
-		}else
-		{
-			updateBadgeText("");	
+			badge = notifications.toString() + "/" + inbox.toString();
 		}
+		else if(notifications > 0)
+		{
+			badge = notifications.toString();	
+		}
+		else if (inbox > 0)
+		{
+			badge = inbox.toString();	
+		}
+		updateBadgeText(badge);
 	}
 	
 	function update()
