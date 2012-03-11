@@ -1,14 +1,15 @@
 <html>
 	<script>
-	
 	var result = null;
 	var xhr = null;
 	var xhrTimeout = null;
+	var lastUpdate = 0;
 	
 	function checkLogin()
 	{
 		xhr = new XMLHttpRequest();
-		xhr.open("GET", "http://api.quora.com/api/logged_in_user?fields=inbox,notifs", true);
+		url = "http://api.quora.com/api/logged_in_user?fields=inbox,notifs"+"&rand="+Math.random();
+		xhr.open("GET", url, true);
 		xhr.onreadystatechange = function() {
 	  		if (xhr.readyState == 4) {
 	  			clearTimeout(xhrTimeout);
@@ -35,6 +36,18 @@
    		setTimeout("checkLogin();", 5000);
    		update();
 	}	
+	
+	function live()
+	{
+		d = new Date();
+		now = d.getTime();
+		//alert("I'm alive. Last update:"+(now-lastUpdate));
+		
+		if(now - lastUpdate > (1000 * 60 * 5))
+		{
+			checkLogin();
+		}
+	}
 	
 	function userNotLoggedIn()
 	{
@@ -63,6 +76,9 @@
 	
 	function update()
 	{
+		d = new Date();
+		now = d.getTime();
+		lastUpdate = now;
 		if(null == result)
 		{
 			userNotLoggedIn();
@@ -129,9 +145,10 @@
 	
 	function run()
 	{
+		setInterval(live, 1000);
 		chrome.extension.onRequest.addListener(
-		function(request, sender, sendResponse) {
-			
+		function(request, sender, sendResponse) 
+		{	
 		    if (request.data == "login")
 		    {
 		      sendResponse({"result": result});
@@ -150,7 +167,6 @@
 		    {
 		     	sendResponse({});
 		    }
-		    
 		});
 		createContextMenu();
 		checkLogin();
