@@ -108,15 +108,11 @@ function showNotifications()
 	var html = "";
 	for (i = 0; i < result.notifs.unseen.length && i < 2; i++)
 	{
-		if(i != 0)
-		{
-			html += "<div class='separator'>&nbsp;</div>";
-			html += "<div class='separator' style='border-top:1px solid #C7C7C7;'>&nbsp;</div>";
-		}
-		
 		html += "<div class='separator'>&nbsp;</div>";	
 		html += "<div>"+result.notifs.unseen[i]+"</div>";
 		html += "<div class='separator'>&nbsp;</div>";
+		html += "<div class='separator'>&nbsp;</div>";
+		html += "<div class='separator' style='border-top:1px solid #C7C7C7;'>&nbsp;</div>";
 	}	
 	
 	$("#notification_content").html(html);
