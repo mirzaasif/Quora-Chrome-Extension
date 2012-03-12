@@ -106,7 +106,7 @@ function update()
 function showNotifications()
 {
 	var html = "";
-	for (i = 0; i < result.notifs.unseen.length && i < 2; i++)
+	for (i = 0; i < result.notifs.unseen.length; i++)
 	{
 		html += "<div class='separator'>&nbsp;</div>";	
 		html += "<div>"+result.notifs.unseen[i]+"</div>";
