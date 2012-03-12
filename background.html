@@ -4,6 +4,7 @@
 	var xhr = null;
 	var xhrTimeout = null;
 	var lastUpdate = 0;
+	var lastException = null;
 	
 	function checkLogin()
 	{
@@ -18,22 +19,23 @@
 	    			result = JSON.parse(xhr.responseText.match(/{.*}/));
 	    		}catch(ex)
 	    		{
+	    			lastException = ex;
 	    			result = null;
 	    		}finally
 	    		{
 	    			update();
-	   				setTimeout("checkLogin();", 5000);
+	   				setTimeout("checkLogin();", 30000);
 	    		}  	   
 	  		}
 		}
-		var xhrTimeout = setTimeout("ajaxTimeout();", 5000);
+		var xhrTimeout = setTimeout("ajaxTimeout();", 30000);
 		xhr.send();
 	}
 	
 	function ajaxTimeout()
 	{	
 		xhr.abort();
-   		setTimeout("checkLogin();", 5000);
+   		setTimeout("checkLogin();", 30000);
    		update();
 	}	
 	
