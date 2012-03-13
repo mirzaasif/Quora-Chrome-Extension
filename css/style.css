@@ -202,7 +202,7 @@ body
 {
 	min-height: 30px;
 	cursor: pointer;	
-	padding: 5px 10px;	
+	padding: 5px 11px;	
 	color:#333;
 }
 
@@ -211,22 +211,34 @@ body
 	color:#333;
 }
 
-.suggestion_item .title span
+.suggestion_item .title span.match
 {
 	color:#333;
 	font-weight: bold;
 }
 
+.suggestion_item .title span.faded
+{
+	color:#333;
+	font-size:11px;
+	display:block;
+}
+
+.suggestion_item .title .pic
+{
+	display:none;
+}
+
 .suggestion_item .des
 {
 	color:#333;
-	font-size:10px;
+	font-size:11px;
 }
 
 .note
 {
 	color:#333;
-	padding:10px;
+	padding:11px;
 }
 
 .selected
