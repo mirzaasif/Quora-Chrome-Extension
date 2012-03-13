@@ -2,10 +2,10 @@ var result = null;
 
 function openLink(link)
 {
-	url = "http://www.quora.com/" + link;
+	url = "http://www.quora.com" + link;
 	create = {"url": url};
 	chrome.tabs.create(create);
-	hide();
+	setTimeout("hide();", 300);
 }
 
 function openFullLink(link)
@@ -23,6 +23,8 @@ function postThisPage()
 
 function hide()
 {
+	$("#search_suggestion").css("display", "none");
+	
 	var views = chrome.extension.getViews({});
     for (var corey = 0; corey < views.length; corey++) 
     {		//Find pop.html in all of those pages
@@ -36,7 +38,7 @@ function hide()
 
 function search()
 {
-	query = $("#searchInput").val();
+	query = $("#search_input").val();
 	if(query == "")
 	{
 		return;
@@ -153,4 +155,139 @@ function onLoad()
   		result = response.result;
 	  	update();
 	});
+}
+/*
+ * not completed yet
+ */
+function handleArrows(code)
+{
+	$(".suggestion_item").each(
+		function(){
+			if($(this).hasClass("active"))
+			{
+				next = $(this).next();
+				if(next != null)
+				{
+					$(this).removeClass("active");		
+					//next.addClass("active");
+					$("#search_input").val(next.html());
+				}
+			}
+		}
+	);
+}
+function fetchSearchSuggesion(e)
+{
+	if (!e) var e = window.event;
+	if (e.keyCode) code = e.keyCode;
+	else if (e.which) code = e.which;
+	
+	if(code == 38 || code == 40  || code == 37 || code == 39)
+	{
+		//handleArrows(code);
+		if(e == 38 || e == 40)
+		{
+			e.preventDefault();
+		}
+		return;
+	}
+	
+	query = $("#search_input").val();
+	if(query == "")
+	{
+		html = {"html":""};
+		showSearchSuggestion(html);
+		return''
+	}
+	
+	d = new Date();
+	time = d.getTime();
+	$.ajax({
+	  url: 'http://www.quora.com/ajax/full_navigator_results?q='+encodeURIComponent(query)+'&data=%7B%7D&___W2_parentId='+Math.random()+'&___W2_windowId='+Math.random(),
+	  success: function( data ) {
+	    showSearchSuggestion(data, time, query.toString());
+	  },
+	  cache: false
+	});
+}
+
+lastUpdateTime = 0;
+
+function showSearchSuggestion(data, time, query)
+{
+	
+	if(time != null && time != undefined)
+	{
+		if(lastUpdateTime >= time)
+		{
+			return;
+		}
+	}
+	
+	d = new Date();
+	
+	lastUpdateTime = d.getTime();
+	
+	
+	$("#search_suggestion_original").html(data.html);
+	
+	$("#search_suggestion").html("");
+	//link = array();
+	count = 0;
+	$("#search_suggestion_original a").each(
+		function()
+		{
+			
+			url = $(this).attr("href");
+			text = $(this).find('.text');
+			if(url != "#" && text.text() != "")
+			{
+				text = $(this).find('.text');
+				des = $(this).find('.desc');
+				img = $(this).find('img');
+				if(count == 0)
+				{
+					div = "<div onclick='openLink(&quot;"+url+"&quot;)' class='suggestion_item active'>";	
+				}else
+				{
+					div = "<div onclick='openLink(&quot;"+url+"&quot;)' class='suggestion_item'>";
+				}
+				
+				if(img.attr("src") != null)
+				{
+					div += "<div style='float:right;'><img src='"+img.attr("src")+"'/></div>"
+				}
+				div += "<div class='title'>"+text.text()+"</div>";
+				div += "<div class='des'>"+des.text()+"</div>";
+				div += "</div>";
+				$("#search_suggestion").append(div);
+				count++;
+			}
+		}
+	);
+	if(count == 0)
+	{
+		div = "<div class='note'>Find Questions, Boards, Topics and People</div>"
+		$("#search_suggestion").append(div);
+	}else
+	{	
+		if(query != null && query != undefined)
+		{
+			url = "/search?q="+query;
+			div = "<div onclick='openLink(&quot;"+url+"&quot;)' class='suggestion_item'>";
+			div += "<div class='title'>Search: "+query+" on Quora</div>";
+			div += "<div class='des'></div>";
+			div += "</div>";
+			$("#search_suggestion").append(div);
+		}
+	}
+	
+	//$("#search_suggestion").html(data.html);
+	//$("#search_suggestion").slideDown();
+	//$("#search_suggestion").css("display", "block");
+}
+
+function hideSuggestion()
+{
+	$("#search_suggestion").slideUp("fast");
 }

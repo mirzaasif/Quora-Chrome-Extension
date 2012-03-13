@@ -81,6 +81,7 @@ body
 {
 	text-align: center;
 	padding: 10px;
+	position:relative;
 }
 
 .search input
@@ -90,9 +91,26 @@ body
 	font-size:14px;
 	padding: 0px 4px;
 }
+
+.search .suggestion
+{
+	width: 94%; 
+	max-height:300px; 
+	position: absolute;
+	text-align:left;
+	background-color: #F7F7F7;
+	overflow:auto;
+	border: 1px solid #E7E7E7;
+	margin-left:1px;
+	color:#333;
+	margin-left:2px;
+	display: none;
+}
+
 .post
 {
 	padding:10px;
+	padding-left: 12px;
 }
 .button
 {
@@ -132,7 +150,7 @@ body
 
 .notifications
 {
-	margin :10px 10px 5px 10px;
+	margin :10px 12px 5px 13px;
 	padding: 5px;
 	display:none;
 	border: 1px solid #19558D;
@@ -178,4 +196,35 @@ body
 	font-size:1px;
 	line-height:2px;
 	height:4px;
+}
+
+.suggestion_item
+{
+	min-height: 30px;
+	cursor: pointer;	
+	padding: 5px 10px;	
+	color:#333;
+}
+
+.suggestion_item .title
+{
+	color:#333;
+}
+
+.suggestion_item .des
+{
+	color:#333;
+	font-size:10px;
+}
+
+.note
+{
+	color:#333;
+	padding:10px;
+}
+
+.suggestion_item:hover
+{
+	background-color:#A7A7A7;
+	
 }
