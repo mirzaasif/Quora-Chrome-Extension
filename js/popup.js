@@ -44,8 +44,15 @@ function search()
 		return;
 	}
 	
-	sendMessage({"data":"search", "query":query}, function(){});
-	hide();
+	element = $(".selected");
+	if(element.length > 0)
+	{
+		element.click();
+	}else
+	{
+		sendMessage({"data":"search", "query":query}, function(){});
+		hide();
+	}
 }
 
 function update()
@@ -156,22 +163,32 @@ function onLoad()
 	  	update();
 	});
 }
-/*
- * not completed yet
- */
+
 function handleArrows(code)
 {
+	var done = false;
 	$(".suggestion_item").each(
-		function(){
-			if($(this).hasClass("active"))
+		function()
+		{
+			if($(this).hasClass("selected") && !done)
 			{
-				next = $(this).next();
-				if(next != null)
+				if(code == 38)
 				{
-					$(this).removeClass("active");		
-					//next.addClass("active");
-					$("#search_input").val(next.html());
+					next = $(this).prev();
+				}else if(code == 40)
+				{
+					next = $(this).next();	
 				}
+				
+				if(next.hasClass("suggestion_item"))
+				{
+					$(this).removeClass("selected");
+					next.addClass("selected");
+					item = document.getElementById(next.attr("id"));
+					item.scrollIntoView(false);
+				}
+				
+				done = true;
 			}
 		}
 	);
@@ -184,14 +201,8 @@ function fetchSearchSuggesion(e)
 	
 	if(code == 38 || code == 40  || code == 37 || code == 39)
 	{
-		//handleArrows(code);
-		if(e == 38 || e == 40)
-		{
-			e.preventDefault();
-		}
 		return;
 	}
-	
 	query = $("#search_input").val();
 	if(query == "")
 	{
@@ -247,17 +258,17 @@ function showSearchSuggestion(data, time, query)
 				img = $(this).find('img');
 				if(count == 0)
 				{
-					div = "<div onclick='openLink(&quot;"+url+"&quot;)' class='suggestion_item active'>";	
+					div = "<div id='item_"+count+"' onclick='openLink(&quot;"+url+"&quot;)' class='suggestion_item selected'>";	
 				}else
 				{
-					div = "<div onclick='openLink(&quot;"+url+"&quot;)' class='suggestion_item'>";
+					div = "<div id='item_"+count+"' onclick='openLink(&quot;"+url+"&quot;)' class='suggestion_item'>";
 				}
 				
 				if(img.attr("src") != null)
 				{
 					div += "<div style='float:right;'><img src='"+img.attr("src")+"'/></div>"
 				}
-				div += "<div class='title'>"+text.text()+"</div>";
+				div += "<div class='title'>"+text.html()+"</div>";
 				div += "<div class='des'>"+des.text()+"</div>";
 				div += "</div>";
 				$("#search_suggestion").append(div);
@@ -274,7 +285,7 @@ function showSearchSuggestion(data, time, query)
 		if(query != null && query != undefined)
 		{
 			url = "/search?q="+query;
-			div = "<div onclick='openLink(&quot;"+url+"&quot;)' class='suggestion_item'>";
+			div = "<div id='item_-1' onclick='openLink(&quot;"+url+"&quot;)' class='suggestion_item'>";
 			div += "<div class='title'>Search: "+query+" on Quora</div>";
 			div += "<div class='des'></div>";
 			div += "</div>";
@@ -282,12 +293,42 @@ function showSearchSuggestion(data, time, query)
 		}
 	}
 	
-	//$("#search_suggestion").html(data.html);
-	//$("#search_suggestion").slideDown();
-	//$("#search_suggestion").css("display", "block");
+	$(".suggestion_item").each(
+		function()
+		{
+			$(this).mouseover(
+				function()
+				{
+					$(".selected").removeClass("selected");
+					$(this).addClass("selected");
+				}
+			);
+		}
+	);
 }
 
 function hideSuggestion()
 {
 	$("#search_suggestion").slideUp("fast");
+}
+
+
+function onKeydown(e)
+{
+	if (!e) var e = window.event;
+	if (e.keyCode) code = e.keyCode;
+	else if (e.which) code = e.which;
+	
+	if(code == 38 || code == 40  || code == 37 || code == 39)
+	{
+		if(code == 38 || code == 40)
+		{
+			handleArrows(code);
+			e.preventDefault();
+			return true;
+		}
+		
+	}
+	return true;
+	
 }

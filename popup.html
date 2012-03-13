@@ -2,7 +2,7 @@
 <html>
 	<header>
 		<link href="css/style.css" media="screen" rel="stylesheet" type="text/css" />
-		<script src="js/jquery-1.7.1.min.js"></script>
+		<script src="js/lib/jquery-1.7.1.min.js"></script>
 		<script src="js/popup.js"></script>		
 	</header>
 	<body onload="onLoad()">
@@ -23,7 +23,7 @@
 			<div class="content">
 				<div class="search">
 					<form onsubmit="search(); return false;">
-						<input id="search_input" type="text" placeholder="Search your boards and all of Quora" tabindex="2" onKeyUp="fetchSearchSuggesion(event); return false;" autocomplete="off" onfocus="$('#search_suggestion').slideDown();" onblur="hideSuggestion(); return false;"/>
+						<input id="search_input" type="text" placeholder="Search your boards and all of Quora" tabindex="2" onkeydown="return onKeydown(event)" onkeyup="return fetchSearchSuggesion(event);" autocomplete="off" onfocus="$('#search_suggestion').slideDown();" onblur="hideSuggestion(); return false;"/>
 					</form>
 					<div id="search_suggestion" class="suggestion">
 						<div class="note">Find Questions, Boards, Topics and People</div>

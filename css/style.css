@@ -211,6 +211,12 @@ body
 	color:#333;
 }
 
+.suggestion_item .title span
+{
+	color:#333;
+	font-weight: bold;
+}
+
 .suggestion_item .des
 {
 	color:#333;
@@ -223,7 +229,7 @@ body
 	padding:10px;
 }
 
-.suggestion_item:hover
+.selected
 {
 	background-color:#A7A7A7;
 	
