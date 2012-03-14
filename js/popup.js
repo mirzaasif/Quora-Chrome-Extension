@@ -208,7 +208,7 @@ function fetchSearchSuggesion(e)
 	{
 		html = {"html":""};
 		showSearchSuggestion(html);
-		return''
+		return;
 	}
 	
 	d = new Date();
@@ -233,11 +233,13 @@ function showSearchSuggestion(data, time, query)
 		{
 			return;
 		}
+	}else
+	{
+		d = new Date();
+		time = d.getTime();
 	}
 	
-	d = new Date();
-	
-	lastUpdateTime = d.getTime();
+	lastUpdateTime = time;
 	
 	
 	$("#search_suggestion_original").html(data.html);
