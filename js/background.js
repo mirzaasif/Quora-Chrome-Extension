@@ -161,6 +161,15 @@ function getRecoomendationSuccess(data, sendResponse)
   			href = $(this).attr("href");
   			text = $(this).find('.text').text();
 			des = $(this).find('.desc').text();
+			if(des == "")
+			{
+				des = $(this).find('.faded').text();
+				index = text.lastIndexOf(des);
+				if(index > -1)
+				{
+					text = text.substr(0, index - 1);
+				}
+			}
 			img = $(this).find('img');
 			if(img.length > 0)
 			{
@@ -174,19 +183,31 @@ function getRecoomendationSuccess(data, sendResponse)
 			{
 				obj = {"url": href, "title": text, "des": des, "img": img};
 			
+				type = "Etc";
 				if($(this).parent().hasClass("board"))
 				{
 					responseData.board[responseData.board.length] = obj;
+					type = "Board";
 				}else if($(this).parent().hasClass("topic"))
 				{
 					responseData.topic[responseData.topic.length] = obj;
+					type = "Topic";
 				}else if($(this).parent().hasClass("question"))
 				{
 					responseData.question[responseData.question.length] = obj;
+					type = "Question";
 				}else if($(this).parent().hasClass("profile"))
 				{
 					responseData.profile[responseData.profile.length] = obj;
+					type = "Profile";
 				}
+				
+				if(des == "")
+				{
+					des = type;
+				}
+				
+				obj = {"url": href, "title": text, "des": des, "img": img, "type": type};
 				
 				responseData.all[responseData.all.length] = obj;	
 			}	
