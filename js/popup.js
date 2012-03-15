@@ -5,7 +5,8 @@ function openLink(link)
 	url = "http://www.quora.com" + link;
 	create = {"url": url};
 	chrome.tabs.create(create);
-	setTimeout("hide();", 300);
+	//setTimeout("hide();", 300);
+	hide();
 }
 
 function openFullLink(link)
@@ -30,10 +31,21 @@ function hide()
     {		//Find pop.html in all of those pages
         if (views[corey].location.href == chrome.extension.getURL('popup.html')) 
         {
-        	views[corey].close();					
-         	break;												
+        	views[corey].close();																
         }
     }
+}
+
+function hideNotification()
+{
+	$("#notifications").css('display','none');
+	$("#recommendations").slideDown();
+}
+
+function showNotification()
+{
+	$("#recommendations").css('display','none');
+	$("#notifications").slideDown();
 }
 
 function search()
@@ -91,7 +103,7 @@ function update()
 		}else
 		{
 			$("#item_notification_count").css("display", "none");
-			$(".notifications").css("display", "none");
+			$("#notifications").css("display", "none");
 			$("#notification_content").html("");
 		}
 		
@@ -125,7 +137,7 @@ function showNotifications()
 	}	
 	
 	$("#notification_content").html(html);
-	$(".notifications").css("display", "block");
+	//$("#notifications").css("display", "block");
 	
 	$("#notification_content a").each(
 		function()
@@ -151,9 +163,52 @@ function showProfile()
 	}
 }
 
-function sendMessage(message, response)
+function showRecommendationLink()
 {
-	chrome.extension.sendRequest(message, response);
+	chrome.tabs.getSelected(null, function(tab) {
+		request = {"request":"title"}
+		chrome.tabs.sendRequest(tab.id, request, function(response)
+		{
+			title = response.response;
+			try
+			{
+				message = {"data" : "recommendation", "title" : title};
+				sendMessage(message, function(response)
+					{
+						count = 0;
+						html = "";
+							
+						for (i = 0; i < response.all.length; i++)
+						{
+							if(response.all[i].title != "")
+							{
+								url = "http://www.quora.com"+response.all[i].url;
+							
+								html += "<div class='separator'>&nbsp;</div>";	
+								//html += "<div style='font-size:11px;'>"+response.all[i].des+"</div>";
+								html += "<div class='separator'>&nbsp;</div>";
+								html += "<div>"+response.all[i].des+": <a href='#' onclick='openLink(&quot;"+response.all[i].url+"&quot;)'>"+response.all[i].title+"</a></div>";		
+								html += "<div class='separator'>&nbsp;</div>";
+								
+								count++;	
+							}			
+						}
+
+						if(count > 0)
+						{
+							$("#recommendation_content").html(html);
+							$("#recommendations").slideDown();
+							//$("#recommendations").css("display", "block");	
+						}
+					}
+				);	
+			}catch(e)
+			{
+				alert(e.toString());
+			}
+			
+		});
+	});
 }
 
 function onLoad()
@@ -161,6 +216,17 @@ function onLoad()
 	sendMessage({"data": "login"}, function(response) {
   		result = response.result;
 	  	update();
+	  	showRecommendationLink();
+	  	sendMessage({"data":"get_settings"}, function(response)
+		{
+			if(response.settings.setting1)
+			{
+				$("#settings1").attr("checked", "checked");
+			}else
+			{
+				$("#settings1").removeAttr("checked");
+			}
+		});	
 	});
 }
 
@@ -193,24 +259,45 @@ function handleArrows(code)
 		}
 	);
 }
-function fetchSearchSuggesion(e)
+
+searchTimer = null;
+searchValue = null;
+
+function focusSearch()
 {
-	if (!e) var e = window.event;
-	if (e.keyCode) code = e.keyCode;
-	else if (e.which) code = e.which;
+	$('#search_suggestion').slideDown();
+	searchTimer = setInterval("fetchSearchSuggesion();", 300)
+}
+
+function blurSearch()
+{
+	hideSuggestion();
+	if(searchTimer != null)
+	{
+		clearInterval(searchTimer);	
+		searchTimer = null;
+	}
+}
+
+function fetchSearchSuggesion()
+{
+	query = $("#search_input").val().trim();
 	
-	if(code == 38 || code == 40  || code == 37 || code == 39)
+	if(query == searchValue)
 	{
 		return;
 	}
-	query = $("#search_input").val();
+	
 	if(query == "")
 	{
+		searchValue = query;
 		html = {"html":""};
 		showSearchSuggestion(html);
 		return;
 	}
 	
+	searchValue = query;
+	 
 	d = new Date();
 	time = d.getTime();
 	$.ajax({
@@ -329,8 +416,28 @@ function onKeydown(e)
 			e.preventDefault();
 			return true;
 		}
-		
 	}
 	return true;
-	
+}
+
+function showSettings()
+{
+	$("#settings").slideDown();
+}
+
+function hideSettings()
+{
+	$("#settings").slideUp();
+}
+
+function changeSettings()
+{
+	if($("#settings1").attr('checked') == "checked")
+	{
+		settings = {"setting1" : true};
+	}else
+	{
+		settings = {"setting1" : false};
+	}
+	sendMessage({"data":"save_settings", "settings" : settings}, function(){});	
 }

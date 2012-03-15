@@ -94,12 +94,7 @@ function update()
 		userLoggedIn();
 	}
 }
-			
-function updateBadgeText(text)
-{
-	chrome.browserAction.setBadgeText({"text": text})
-}
-			
+					
 function createContextMenu()
 {
 	chrome.contextMenus.create({"title":"Post to Quora", "onclick": contextPost});
@@ -149,6 +144,84 @@ function searchOnQuora(topic)
 	create = {"url": url};
 	chrome.tabs.create(create);
 }
+
+function getRecoomendationSuccess(data, sendResponse)
+{
+  	$("#result").html(data.html);
+  	responseData = new Object();
+  	responseData.board = [];
+  	responseData.topic = [];
+  	responseData.question = [];
+  	responseData.profile = [];
+  	responseData.all = [];
+  	
+  	$("#result a").each(
+  		function()
+  		{
+  			href = $(this).attr("href");
+  			text = $(this).find('.text').text();
+			des = $(this).find('.desc').text();
+			img = $(this).find('img');
+			if(img.length > 0)
+			{
+				img = img.attr("src");
+			}else
+			{
+				img = null;
+			}
+			
+			if(href != "" && href != "#")
+			{
+				obj = {"url": href, "title": text, "des": des, "img": img};
+			
+				if($(this).parent().hasClass("board"))
+				{
+					responseData.board[responseData.board.length] = obj;
+				}else if($(this).parent().hasClass("topic"))
+				{
+					responseData.topic[responseData.topic.length] = obj;
+				}else if($(this).parent().hasClass("question"))
+				{
+					responseData.question[responseData.question.length] = obj;
+				}else if($(this).parent().hasClass("profile"))
+				{
+					responseData.profile[responseData.profile.length] = obj;
+				}
+				
+				responseData.all[responseData.all.length] = obj;	
+			}	
+  		}
+  	);
+    sendResponse(responseData);
+}
+
+function getRecommendation(title, sendResponse)
+{
+	if(title == "")
+	{
+		return;
+	}
+	
+	data = checkCache(title);
+	
+	if(data == null)
+	{
+		$.ajax({
+		  url: 'http://www.quora.com/ajax/full_navigator_results?q='+encodeURIComponent(title)+'&data=%7B%7D&___W2_parentId='+Math.random()+'&___W2_windowId='+Math.random(),
+		  success: function(data)
+		  {
+		  	getRecoomendationSuccess(data, sendResponse);
+		  	updateCache(title, data);
+		  },
+		  cache: false
+		});
+	}else
+	{
+		getRecoomendationSuccess(data, sendResponse);
+	}
+			
+}
+
 			
 function onLoad()
 {
@@ -157,18 +230,29 @@ function onLoad()
 	function(request, sender, sendResponse) 
 	{	
 	    if (request.data == "login")
-    {
-      sendResponse({"result": result});
-    }
-    else if(request.data == "search")
-    {
-    	searchOnQuora(request.query);
-    }
-    else if(request.data == "post")
+	    {
+	      sendResponse({"result": result});
+	    }
+	    else if(request.data == "search")
+	    {
+	    	searchOnQuora(request.query);
+	    }
+	    else if(request.data == "post")
 	    {
 	    	chrome.tabs.getSelected(null, function(tab) {
 				postToQuora(tab.url);
 		    });
+	    }
+	    else if(request.data == "recommendation")
+	    {
+	    	getRecommendation(request.title, sendResponse)
+	    }else if(request.data == "get_settings")
+	    {
+	    	settings = getSettings();
+	    	sendResponse({"settings": settings});
+	    }else if(request.data == "save_settings")
+	    {
+	    	updateSettings(request.settings);
 	    }
 	    else
 	    {

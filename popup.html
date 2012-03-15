@@ -3,6 +3,7 @@
 	<header>
 		<link href="css/style.css" media="screen" rel="stylesheet" type="text/css" />
 		<script src="js/lib/jquery-1.7.1.min.js"></script>
+		<script src="js/common.js"></script>			
 		<script src="js/popup.js"></script>		
 	</header>
 	<body onload="onLoad()">
@@ -11,7 +12,7 @@
 				<div class="header_logo" onclick="openLink('');"></div>
 				<div class="menu">
 					<ul>
-						<li id="item_notification"><a href="#" onclick="openLink('/notifications'); return false;">Notification<span id="item_notification_count" class="count"></span></a></li>
+						<li id="item_notification"><a href="#" onclick="showNotification(); return false;">Notification<span id="item_notification_count" class="count"></span></a></li>
 						<li id="item_inbox"><a href="#" onclick="openLink('/inbox'); return false;">Inbox<span id="item_inbox_count" class="count"></span></a></li>
 						<li id="item_profile"><a href="#" onclick="showProfile(); return false;"></a></li>
 						<li id="item_about"><a href="#" onclick="openLink('/about'); return false;">About</a></li>
@@ -23,7 +24,7 @@
 			<div class="content">
 				<div class="search">
 					<form onsubmit="search(); return false;">
-						<input id="search_input" type="text" placeholder="Search your boards and all of Quora" tabindex="2" onkeydown="return onKeydown(event)" onkeyup="return fetchSearchSuggesion(event);" autocomplete="off" onfocus="$('#search_suggestion').slideDown();" onblur="hideSuggestion(); return false;"/>
+						<input id="search_input" type="text" placeholder="Search your boards and all of Quora" tabindex="3" onkeydown="return onKeydown(event)" autocomplete="off" onfocus="focusSearch(); return false;" onblur="blurSearch(); return false;"/>
 					</form>
 					<div id="search_suggestion" class="suggestion">
 						<div class="note">Find Questions, Boards, Topics and People</div>
@@ -32,14 +33,36 @@
 				</div>
 				<div class="post">
 					<input type="button" value="Post this page to Quora" class="button" onclick="postThisPage(); return false;" tabindex="1">
+					<input type="button" value="Settings" class="button" onclick="showSettings(); return false;" tabindex="2" style="float:right;">
 				</div>
-				<div class="notifications">
-					<div class="title">New Notifications</div>
-					<div id="notification_content" class="notification_content"></div>
+				<div class="notifications" id="settings">
+					<div class="title">
+						<div style="float:left; color:#333;">Settings</div>
+						<div style="float:right;"><a href="#" onclick="hideSettings(); return false;" style="font-weight:normal; font-size:11px;">[Hide]</a></div>
+						<div style='clear:both;'></div>
+					</div>
+					<div id="settings_content" class="notification_content">
+						<input type="checkbox" id="settings1" onchange="changeSettings(); return false;"/><label for="settings1">&nbsp;Display board recommendation on page.</label>
+					</div>
+					<div class='separator'>&nbsp;</div>
+				</div>
+				<div class="notifications" id="recommendations">
+					<div class="title">Charm Recommendation at Quora</div>
+					<div id="recommendation_content" class="notification_content">There isn't any recommendation for this page.</div>
+					<div class='separator'>&nbsp;</div>
+				</div>
+				<div class="notifications" id="notifications">
+					<div class="title">
+						<div style="float:left; color:#333;">New Notifications</div>
+						<div style="float:right;"><a href="#" onclick="hideNotification(); return false;" style="font-weight:normal; font-size:11px;">&lt;&lt;Back</a></div>
+						<div style='clear:both;'></div>
+					</div>
+					<div id="notification_content" class="notification_content">There isn't any notification at this moment.</div>
 					<div class='separator'>&nbsp;</div>
 					<div><input type="button" value="View All Notifications" class="button" onclick="openLink('/notifications'); return false;"></div>
 				</div>
 			</div>
+			
 		</div>
 	</body>
 </html

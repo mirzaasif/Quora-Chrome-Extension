@@ -1,0 +1,38 @@
+.charm_quora
+{
+	width:120px;
+	position:fixed;
+	display:none;;
+	max-height:300px;
+	overflow:auto;
+	top:200px;
+	font-family: "Helvetica Neue",Helvetica,Arial,default;
+	background-color: #F7F7F7;
+	border-radius: 10px;
+	border: 1px solid #A7A7A7;
+	padding: 10px;
+	font-size:12px;
+}
+
+.charm_quora .title
+{
+	font-weight:bold;
+	padding-bottom: 5px;
+	border-bottom: 1px solid #C7C7C7;
+}
+
+.charm_quora .result
+{
+	padding: 5px 0px;
+}
+
+.charm_quora .result .result_item
+{
+	padding-bottom: 4px;
+}
+
+.charm_quora a
+{
+	color: #19558D;
+	font-weight:bold;
+}
