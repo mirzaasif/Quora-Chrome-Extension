@@ -1,12 +1,26 @@
 var pageTitle = null;
+function checkbox()
+{
+	if($("#charm_settings1").attr("checked") == "checked")
+	{
+		$("#charm_settings1").removeAttr("checked");
+	}else
+	{
+		$("#charm_settings1").attr("checked", "checked");
+	}
+	settingUpdate();
+}
+
 function onLoad()
 {
 	$(document).ready(function() {
 		
-		$("body").append("<div class='charm_quora'><div class='title'>Recommended Board at Quora</div><div id='result' class='result'></div><div style='text-align:center; padding-bottom:4px;'><a href='#' onclick='$(&quot;.charm_quora&quot;).css(&quot;display&quot;, &quot;none&quot;)'>[Hide]</a></div><div style='float:left; padding-top:4px;'><input type='checkbox' id='charm_settings1' style='float:left; width:20px;'/></div><div style='float:left;'><label for='charm_settings1'  style='width:auto; cursor:pointer;'>Don't show again</label></div></div>");
+		$("body").append("<div class='charm_quora' id='charm_quora'><div class='title'>Recommended Board at Quora</div><div id='result' class='result'></div><div style='text-align:center; padding-bottom:4px;'><div style='cursor:pointer;' id='charm_hide'>[Hide]</div></div><div style='padding-top:5px;' id='charm_set'><input type='checkbox' id='charm_settings1'/><div style='cursor:pointer; float:right; padding-right:10px;' id='charm_label'>Don't show again</div></div></div>");
 		left = (parseInt($(window).width())-150);
-		$(".charm_quora").css("left", left);
+		$("#charm_quora").css("left", left);
 		$("#charm_settings1").change(settingUpdate);
+		$("#charm_label").click(checkbox);
+		$("#charm_hide").click(function(){$("#charm_quora").css("display", "none");});
 		
 		try
 		{
@@ -14,11 +28,21 @@ function onLoad()
 		}catch(e)
 		{
 			pageTitle = $(this).attr('title');
+			index = pageTitle.lastIndexOf("-");
+			if(index > - 1)
+			{
+				pageTitle = pageTitle.subString(0, index-1);
+			}
 		}finally
 		{
 			if(pageTitle == null || pageTitle == undefined)
 			{
 				pageTitle = $(this).attr('title');
+				index = pageTitle.lastIndexOf("-");
+				if(index > - 1)
+				{
+					pageTitle = pageTitle.substr(0, index-1);
+				}
 			}
 		}
 		
@@ -76,5 +100,6 @@ function settingUpdate()
 		settings = {"setting1" : true};
 	}
 	sendMessage({"data":"save_settings", "settings" : settings}, function(){});	
+	return false;
 }
 
