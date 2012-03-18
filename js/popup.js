@@ -39,13 +39,15 @@ function hide()
 function hideNotification()
 {
 	$("#notifications").css('display','none');
-	$("#recommendations").slideDown();
+	//$("#recommendations").slideDown("fast");
+	$("#recommendations").css("display", "block");
 }
 
 function showNotification()
 {
 	$("#recommendations").css('display','none');
-	$("#notifications").slideDown();
+	//$("#notifications").slideDown("fast");
+	$("#notifications").css("display", "block");
 }
 
 function search()
@@ -197,8 +199,8 @@ function showRecommendationLink()
 						if(count > 0)
 						{
 							$("#recommendation_content").html(html);
-							$("#recommendations").slideDown();
-							//$("#recommendations").css("display", "block");	
+							//$("#recommendations").slideDown("fast");
+							$("#recommendations").css("display", "block");	
 						}
 					}
 				);	
@@ -265,7 +267,7 @@ searchValue = null;
 
 function focusSearch()
 {
-	$('#search_suggestion').slideDown();
+	$('#search_suggestion').slideDown("fast");
 	searchTimer = setInterval("fetchSearchSuggesion();", 300)
 }
 
@@ -422,12 +424,12 @@ function onKeydown(e)
 
 function showSettings()
 {
-	$("#settings").slideDown();
+	$("#settings").slideDown("fast");
 }
 
 function hideSettings()
 {
-	$("#settings").slideUp();
+	$("#settings").slideUp("fast");
 }
 
 function changeSettings()
