@@ -136,6 +136,12 @@ function postToQuora(url)
 	link = "http://www.quora.com/board/bookmarklet?v=1&url="+encodeURIComponent(url);	
 	window.open(link,'_blank','toolbar=0,scrollbars=no,resizable=1,status=1,width=430,height=400');	
 }
+
+function postToQuoraWithGroupName(url, name)
+{
+	link = "http://www.quora.com/board/bookmarklet?v=1&url="+encodeURIComponent(url);	
+	postWindow = window.open(link,'_blank','toolbar=0,scrollbars=no,resizable=1,status=1,width=430,height=400');
+}
 			
 function searchOnQuora(topic)
 {
@@ -260,7 +266,14 @@ function onLoad()
 	    else if(request.data == "post")
 	    {
 	    	chrome.tabs.getSelected(null, function(tab) {
-				postToQuora(tab.url);
+	    		if(request.name != undefined && request.name != null)
+	    		{
+	    			postToQuoraWithGroupName(tab.url, request.name);
+	    		}else
+	    		{
+	    			postToQuora(tab.url);
+	    		}
+				
 		    });
 	    }
 	    else if(request.data == "recommendation")

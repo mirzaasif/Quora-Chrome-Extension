@@ -1,17 +1,20 @@
 var pageTitle = null;
 var urlBlock = false;
 var boardRecommendation = new Array();
+var count = 0;
 
 function onLoad()
 {
 	$(document).ready(function() {
 		closeIcon = chrome.extension.getURL("images/close.png");
 		blockIcon = chrome.extension.getURL("images/block.png");
-		$("body").append("<div class='charm_quora' id='charm_quora'><div class='title'>Recommended Boards at Quora</div><div id='result' class='result'></div><div style='text-align:center; padding-bottom:4px;'><img src='"+closeIcon+"' width='16' title='Hide' style='cursor:pointer;' id='charm_hide'/>&nbsp;&nbsp;<img src='"+blockIcon+"' width='16' title='Never show recommendations on this site.' style='cursor:pointer;' id='charm_block'/></div><div style='text-align:center; color:#666; font-size:10px; clear:both;'>Charm for Quora</div></div>");
+		//$("body").append("<div class='charm_quora' id='charm_quora'><div class='title'>Recommended Boards at Quora</div><div id='result' class='result'></div><div style='text-align:center; padding-bottom:4px;'><img src='"+closeIcon+"' width='16' title='Hide' style='cursor:pointer;' id='charm_hide'/>&nbsp;&nbsp;<img src='"+blockIcon+"' width='16' title='Never show recommendations on this site.' style='cursor:pointer;' id='charm_block'/></div><div style='text-align:center; color:#666; font-size:10px; clear:both;'>Charm for Quora</div></div>");
+		$("body").append("<div class='charm_quora' id='charm_quora'><div class='title'>Recommended Boards at Quora</div><div id='result' class='result'></div><div style='text-align:center; padding-bottom:4px;'><label id='charm_post' class='link' style=' cursor:pointer;'>[Post]</label>&nbsp;&nbsp;<label id='charm_hide' class='link' style=' cursor:pointer;'>[Hide]</label></div><div style='text-align:center; padding-bottom:4px; cursor:pointer;' class='link' id='charm_block'>[Block for this site]</div><div style='text-align:center; color:#666; font-size:10px; clear:both;'>Charm for Quora</div></div>");
 		left = (parseInt($(window).width())-150);
 		$("#charm_quora").css("left", left);
 		$("#charm_block").click(blockSite);
 		$("#charm_hide").click(hide);
+		$("#charm_post").click(postQuora);
 		
 		try
 		{
@@ -54,19 +57,21 @@ function onLoad()
 function handleBoardRecommendationResponse(response)
 {
 	documentUrl = document.location;
-	count = 0;
+	
 	for (var i = 0; i < response.board.length; i++)
 	{
-		key = response.board[i].url;
+		var key = response.board[i].url;
 		if(boardRecommendation[key] == null || boardRecommendation[key] == undefined)
 		{
 			boardRecommendation[key] = key;
-			url = "http://www.quora.com"+response.board[i].url;
+			var url = "http://www.quora.com"+response.board[i].url;
+			var name = response.board[i].title;
 		
 			if(url.toString().toLowerCase() != documentUrl.toString().toLowerCase())
 			{
-				div = "<a href='"+url+"' target='_blank'><div class='result_item'>- "+response.board[i].title+"</div></a>";
+				div = "<a href='"+url+"' target='_blank' title='Open "+name+" in a separate tab'><div class='result_item' id='result_item_"+count+"' data-name='"+name+"'>"+name+"</div></a>";
 				$(".charm_quora #result").append(div);
+				//$("#result_item_"+count).click(function(event){postQuora(event);});
 				count++;	
 			}		
 		}
@@ -76,6 +81,12 @@ function handleBoardRecommendationResponse(response)
 	{
 		$(".charm_quora").css("display", "block");
 	}
+}
+
+function postQuora()
+{
+	//name = $(event.currentTarget).attr("data-name");
+	sendMessage({"data":"post"}, function(){});	
 }
 
 function getBoardRecommendationAdvaced(title)
@@ -107,6 +118,9 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse)
 				response = {"response":pageTitle}
 				sendResponse(response);	
 			}
+		}else if(request.request == "post")
+		{
+			
 		}
 	}
 );
@@ -119,8 +133,9 @@ function blockSite()
 			settings = response.settings;
 			settings.block_url = domain + "\n" + settings.block_url;
 			sendMessage({"data":"save_settings", "settings" : settings}, function(){});
-			hide();		
-		}
+			$(".charm_quora #result").append(domain+" has been blocked. You can undo this action from settings.");
+			setTimeout("hide()", 10000);		
+		} 
 	);	
 }
 

@@ -37,15 +37,35 @@
 	padding-bottom: 4px;
 }
 
+.result_item
+{
+	cursor: pointer;
+}
+
+.result_item:hover
+{
+	text-decoration: underline;
+}
+
 .charm_quora a
 {
 	color: #19558D;
-	font-weight:bold;
+	font-weight:normal;
 }
 
 .result_item
 {
 	color: #19558D;	
+}
+
+.link
+{
+	font-size:12px;
+}
+
+.link:hover
+{
+	text-decoration: underline;
 }
 
 #charm_set
