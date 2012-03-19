@@ -41,7 +41,6 @@ function live()
 {
 	d = new Date();
 	now = d.getTime();
-	//alert("I'm alive. Last update:"+(now-lastUpdate));
 	
 	if(now - lastUpdate > (1000 * 60 * 5))
 	{
@@ -145,6 +144,8 @@ function searchOnQuora(topic)
 	chrome.tabs.create(create);
 }
 
+
+
 function getRecoomendationSuccess(data, sendResponse)
 {
   	$("#result").html(data.html);
@@ -223,7 +224,7 @@ function getRecommendation(title, sendResponse)
 		return;
 	}
 	
-	data = checkCache(title);
+	data = checkCache("Title:"+title);
 	
 	if(data == null)
 	{
@@ -232,7 +233,7 @@ function getRecommendation(title, sendResponse)
 		  success: function(data)
 		  {
 		  	getRecoomendationSuccess(data, sendResponse);
-		  	updateCache(title, data);
+		  	updateCache("Title:"+title, data);
 		  },
 		  cache: false
 		});
@@ -240,9 +241,7 @@ function getRecommendation(title, sendResponse)
 	{
 		getRecoomendationSuccess(data, sendResponse);
 	}
-			
 }
-
 			
 function onLoad()
 {

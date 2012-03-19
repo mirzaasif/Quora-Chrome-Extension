@@ -23,7 +23,7 @@
     {
       "matches": ["*://*/*"],
       "css": ["/css/content.css"],
-      "js": ["/js/lib/jquery-1.7.1.min.js", "/js/common.js", "/js/content.js"]
+      "js": ["/js/lib/jquery-1.7.1.min.js", "/js/common.js", "/js/lib/stopword.js","/js/content.js"]
     }
   ]
 }

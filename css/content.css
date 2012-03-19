@@ -1,3 +1,9 @@
+.charm_quora *
+{
+	line-height:16px;
+	color: #333;
+	font-family: "Helvetica Neue",Helvetica,Arial,default;
+}
 .charm_quora
 {
 	width:120px;
@@ -35,6 +41,11 @@
 {
 	color: #19558D;
 	font-weight:bold;
+}
+
+.result_item
+{
+	color: #19558D;	
 }
 
 #charm_set

@@ -1,12 +1,13 @@
 var pageTitle = null;
 var urlBlock = false;
+var boardRecommendation = new Array();
 
 function onLoad()
 {
 	$(document).ready(function() {
 		closeIcon = chrome.extension.getURL("images/close.png");
 		blockIcon = chrome.extension.getURL("images/block.png");
-		$("body").append("<div class='charm_quora' id='charm_quora'><div class='title'>Recommended Board at Quora</div><div id='result' class='result'></div><div style='text-align:center; padding-bottom:4px;'><img src='"+closeIcon+"' width='16' title='Hide' style='cursor:pointer;' id='charm_hide'/>&nbsp;&nbsp;<img src='"+blockIcon+"' width='16' title='Never show recommendations on this site.' style='cursor:pointer;' id='charm_block'/></div><div style='text-align:center; color:#666; font-size:10px; clear:both;'>Charm for Quora</div></div>");
+		$("body").append("<div class='charm_quora' id='charm_quora'><div class='title'>Recommended Boards at Quora</div><div id='result' class='result'></div><div style='text-align:center; padding-bottom:4px;'><img src='"+closeIcon+"' width='16' title='Hide' style='cursor:pointer;' id='charm_hide'/>&nbsp;&nbsp;<img src='"+blockIcon+"' width='16' title='Never show recommendations on this site.' style='cursor:pointer;' id='charm_block'/></div><div style='text-align:center; color:#666; font-size:10px; clear:both;'>Charm for Quora</div></div>");
 		left = (parseInt($(window).width())-150);
 		$("#charm_quora").css("left", left);
 		$("#charm_block").click(blockSite);
@@ -19,21 +20,11 @@ function onLoad()
 		}catch(e)
 		{
 			pageTitle = $(this).attr('title');
-			index = pageTitle.lastIndexOf("-");
-			if(index > - 1)
-			{
-				pageTitle = pageTitle.subString(0, index-1);
-			}
 		}finally
 		{	
 			if(pageTitle == null || pageTitle == undefined)
 			{
 				pageTitle = $(this).attr('title');
-				index = pageTitle.lastIndexOf("-");
-				if(index > - 1)
-				{
-					pageTitle = pageTitle.substr(0, index-1);
-				}
 			}
 		}
 		
@@ -44,34 +35,13 @@ function onLoad()
 				
 				if(!urlBlock)
 				{
-						
 					message = {"data" : "recommendation", "title" : pageTitle};
 					sendMessage(message, function(response)
 						{
-							documentUrl = document.location;
-							
-							count = 0;
-							for (i = 0; i < response.board.length; i++)
+							if(settings.setting1)
 							{
-								url = "http://www.quora.com"+response.board[i].url;
-								
-								if(url.toString().toLowerCase() != documentUrl.toString().toLowerCase())
-								{
-									div = "<a href='"+url+"' target='_blank'><div class='result_item'>"+response.board[i].title+"</div></a>";
-									$(".charm_quora #result").append(div);
-									count++;	
-								}	
-							}
-							
-							if(count > 0)
-							{
-								sendMessage({"data":"get_settings"}, function(response)
-								{
-									if(response.settings.setting1)
-									{
-										$(".charm_quora").css("display", "block");
-									}
-								});	
+								handleBoardRecommendationResponse(response);
+								getBoardRecommendationAdvaced(pageTitle);	
 							}
 						}
 					);
@@ -79,6 +49,52 @@ function onLoad()
 			}
 		);	
 	});
+}
+
+function handleBoardRecommendationResponse(response)
+{
+	documentUrl = document.location;
+	count = 0;
+	for (var i = 0; i < response.board.length; i++)
+	{
+		key = response.board[i].url;
+		if(boardRecommendation[key] == null || boardRecommendation[key] == undefined)
+		{
+			boardRecommendation[key] = key;
+			url = "http://www.quora.com"+response.board[i].url;
+		
+			if(url.toString().toLowerCase() != documentUrl.toString().toLowerCase())
+			{
+				div = "<a href='"+url+"' target='_blank'><div class='result_item'>- "+response.board[i].title+"</div></a>";
+				$(".charm_quora #result").append(div);
+				count++;	
+			}		
+		}
+	}
+	
+	if(count > 0 && $(".charm_quora").css("display") == "none")
+	{
+		$(".charm_quora").css("display", "block");
+	}
+}
+
+function getBoardRecommendationAdvaced(title)
+{
+	var words = title.match(/\b[\w]+\b/g);
+	
+	for (var i = 0; i < words.length; i++)
+	{
+		var word = words[i].trim();
+		if(!isStopWord(word))
+		{
+			var message = {"data" : "recommendation", "title" : word.toString()};
+			sendMessage(message, function(response)
+				{
+					handleBoardRecommendationResponse(response);	
+				}
+			);		
+		}
+	}
 }
 
 onLoad();
