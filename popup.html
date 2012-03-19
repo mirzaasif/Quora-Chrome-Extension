@@ -41,8 +41,27 @@
 						<div style="float:right;"><a href="#" onclick="hideSettings(); return false;" style="font-weight:normal; font-size:11px;">[Hide]</a></div>
 						<div style='clear:both;'></div>
 					</div>
+					<div class='separator'>&nbsp;</div>
 					<div id="settings_content" class="notification_content">
-						<input type="checkbox" id="settings1" onchange="changeSettings(); return false;"/><label for="settings1" style="cursor:pointer;">&nbsp;Display board recommendation on page.</label>
+						<div>
+							<input type="checkbox" id="settings1"/><label for="settings1" style="cursor:pointer;">&nbsp;Display board recommendations on page</label>
+						</div>
+						<div class='separator'>&nbsp;</div>
+						<div class='separator'>&nbsp;</div>
+						<div>
+							<input type="checkbox" id="settings2"/><label for="settings2" style="cursor:pointer;">&nbsp;Don't show recommendations for encrypted (SSL) pages.</label>
+						</div>
+						<div class='separator'>&nbsp;</div>
+						<div class='separator'>&nbsp;</div>
+						<div>Don't show recommendations for following domains:</div>
+						<div class='separator'>&nbsp;</div>
+						<div><textarea id="block_url" style="height:100px; width:300px; padding: 5px;"></textarea></div>
+						<div class='separator'>&nbsp;</div>
+						<div style="color:#333;">(Separate multiple domains by new line. You can use * in subdomain to block entire domain. Eg- *.google.com)</div>
+						<div class='separator'>&nbsp;</div>
+						<div class='separator'>&nbsp;</div>
+						<input type="button" value="Update" class="button" onclick="changeSettings(); return false;">
+						<label id="update_status" style="color:#333; display:none;">Updated</label>
 					</div>
 					<div class='separator'>&nbsp;</div>
 				</div>

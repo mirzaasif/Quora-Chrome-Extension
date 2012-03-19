@@ -228,6 +228,17 @@ function onLoad()
 			{
 				$("#settings1").removeAttr("checked");
 			}
+			
+			if(response.settings.setting2)
+			{
+				$("#settings2").attr("checked", "checked");
+			}else
+			{
+				$("#settings2").removeAttr("checked");
+			}
+			
+			$("#block_url").val(response.settings.block_url);
+			
 		});	
 	});
 }
@@ -434,12 +445,27 @@ function hideSettings()
 
 function changeSettings()
 {
+	blockUrls = $("#block_url").val().trim();
+	
 	if($("#settings1").attr('checked') == "checked")
 	{
-		settings = {"setting1" : true};
+		setting1 = true;
 	}else
 	{
-		settings = {"setting1" : false};
+		setting1 = false;
 	}
+	
+	if($("#settings2").attr('checked') == "checked")
+	{
+		setting2 = true;
+	}else
+	{
+		setting2 = false;
+	}
+	
+	settings = {"setting1" : setting1, "setting2": setting2, "block_url" : blockUrls};
+	
 	sendMessage({"data":"save_settings", "settings" : settings}, function(){});	
+	
+	$("#update_status").fadeIn().delay(3000).fadeOut();
 }

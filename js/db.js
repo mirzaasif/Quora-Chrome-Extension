@@ -38,7 +38,10 @@ function getSettings()
 		item = JSON.parse(item);
 	}else
 	{
-		item = {"setting1": true};
+		settins1 = true;
+		setting2 = true;
+		block_url = "*.google.com\n*.quora.com\n*.live.com\nmail.yahoo.com";
+		item = {"setting1": settins1, "setting2": setting2, "block_url": block_url};
 	}
 	
 	return item;

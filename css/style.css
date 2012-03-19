@@ -110,26 +110,6 @@ body
 	padding:10px;
 	padding-left: 12px;
 }
-.button
-{
-    background-color: #19558D;
-    background-image: url("images/-adc3ffa834bd19c3.gif");
-    border-bottom: 1px solid #062C50;
-    border-color: #19558D #19558D #062C50;
-    color: #FFFFFF;
-    min-width: 40px;
-    text-shadow: 0 1px #19558D;
-    border-color: #BBBBBB #BBBBBB #999999;
-    border-radius: 3px 3px 3px 3px;
-    border-style: solid;
-    border-width: 1px;
-    cursor: pointer;
-    display: inline-block;
-    font-size: 0.9em;
-    font-weight: bold;
-    padding: 3px 10px;
-    text-align: center; 
-}
 
 .count
 {
@@ -175,7 +155,6 @@ body
 {
 	text-decoration:underline;
 }
-
 .notification_content
 {
 	color:#333;
@@ -243,5 +222,25 @@ body
 .selected
 {
 	background-color:#A7A7A7;
-	
+}
+
+.button
+{
+    background-color: #19558D;
+    background-image: url("images/-adc3ffa834bd19c3.gif");
+    border-bottom: 1px solid #062C50;
+    border-color: #19558D #19558D #062C50;
+    color: #FFFFFF;
+    min-width: 40px;
+    text-shadow: 0 1px #19558D;
+    border-color: #BBBBBB #BBBBBB #999999;
+    border-radius: 3px 3px 3px 3px;
+    border-style: solid;
+    border-width: 1px;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 0.9em;
+    font-weight: bold;
+    padding: 3px 10px;
+    text-align: center; 
 }

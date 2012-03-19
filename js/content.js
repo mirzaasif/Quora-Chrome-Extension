@@ -1,30 +1,21 @@
 var pageTitle = null;
-function checkbox()
-{
-	if($("#charm_settings1").attr("checked") == "checked")
-	{
-		$("#charm_settings1").removeAttr("checked");
-	}else
-	{
-		$("#charm_settings1").attr("checked", "checked");
-	}
-	settingUpdate();
-}
+var urlBlock = false;
 
 function onLoad()
 {
 	$(document).ready(function() {
-		
-		$("body").append("<div class='charm_quora' id='charm_quora'><div class='title'>Recommended Board at Quora</div><div id='result' class='result'></div><div style='text-align:center; padding-bottom:4px;'><div style='cursor:pointer;' id='charm_hide'>[Hide]</div></div><div style='padding-top:5px;' id='charm_set'><input type='checkbox' id='charm_settings1'/><div style='cursor:pointer; float:right; padding-right:10px;' id='charm_label'>Don't show again</div></div></div>");
+		closeIcon = chrome.extension.getURL("images/close.png");
+		blockIcon = chrome.extension.getURL("images/block.png");
+		$("body").append("<div class='charm_quora' id='charm_quora'><div class='title'>Recommended Board at Quora</div><div id='result' class='result'></div><div style='text-align:center; padding-bottom:4px;'><img src='"+closeIcon+"' width='16' title='Hide' style='cursor:pointer;' id='charm_hide'/>&nbsp;&nbsp;<img src='"+blockIcon+"' width='16' title='Never show recommendations on this site.' style='cursor:pointer;' id='charm_block'/></div><div style='text-align:center; color:#666; font-size:10px; clear:both;'>Charm for Quora</div></div>");
 		left = (parseInt($(window).width())-150);
 		$("#charm_quora").css("left", left);
-		$("#charm_settings1").change(settingUpdate);
-		$("#charm_label").click(checkbox);
-		$("#charm_hide").click(function(){$("#charm_quora").css("display", "none");});
+		$("#charm_block").click(blockSite);
+		$("#charm_hide").click(hide);
 		
 		try
 		{
 			pageTitle = $("meta[property=og\\:title]").attr("content");	
+			
 		}catch(e)
 		{
 			pageTitle = $(this).attr('title');
@@ -34,7 +25,7 @@ function onLoad()
 				pageTitle = pageTitle.subString(0, index-1);
 			}
 		}finally
-		{
+		{	
 			if(pageTitle == null || pageTitle == undefined)
 			{
 				pageTitle = $(this).attr('title');
@@ -46,36 +37,47 @@ function onLoad()
 			}
 		}
 		
-		message = {"data" : "recommendation", "title" : pageTitle};
-		sendMessage(message, function(response)
+		sendMessage({"data":"get_settings"}, function(response)
 			{
-				documentUrl = document.location;
+				settings = response.settings;
+				urlBlock = isURLBlocked(settings);
 				
-				count = 0;
-				for (i = 0; i < response.board.length; i++)
+				if(!urlBlock)
 				{
-					url = "http://www.quora.com"+response.board[i].url;
-					
-					if(url.toString().toLowerCase() != documentUrl.toString().toLowerCase())
-					{
-						div = "<a href='"+url+"' target='_blank'><div class='result_item'>"+response.board[i].title+"</div></a>";
-						$(".charm_quora #result").append(div);
-						count++;	
-					}	
-				}
-				
-				if(count > 0)
-				{
-					sendMessage({"data":"get_settings"}, function(response)
-					{
-						if(response.settings.setting1)
+						
+					message = {"data" : "recommendation", "title" : pageTitle};
+					sendMessage(message, function(response)
 						{
-							$(".charm_quora").css("display", "block");
+							documentUrl = document.location;
+							
+							count = 0;
+							for (i = 0; i < response.board.length; i++)
+							{
+								url = "http://www.quora.com"+response.board[i].url;
+								
+								if(url.toString().toLowerCase() != documentUrl.toString().toLowerCase())
+								{
+									div = "<a href='"+url+"' target='_blank'><div class='result_item'>"+response.board[i].title+"</div></a>";
+									$(".charm_quora #result").append(div);
+									count++;	
+								}	
+							}
+							
+							if(count > 0)
+							{
+								sendMessage({"data":"get_settings"}, function(response)
+								{
+									if(response.settings.setting1)
+									{
+										$(".charm_quora").css("display", "block");
+									}
+								});	
+							}
 						}
-					});	
+					);
 				}
 			}
-		);
+		);	
 	});
 }
 
@@ -84,22 +86,78 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse)
 	{
 		if(request.request == "title")
 		{
-			response = {"response":pageTitle}
-			sendResponse(response);
+			if(!urlBlock && pageTitle != null)
+			{
+				response = {"response":pageTitle}
+				sendResponse(response);	
+			}
 		}
 	}
 );
 
-function settingUpdate()
+function blockSite()
 {
-	if($("#charm_settings1").attr('checked') == "checked")
+	domain = location.hostname;
+	sendMessage({"data":"get_settings"}, function(response)
+		{
+			settings = response.settings;
+			settings.block_url = domain + "\n" + settings.block_url;
+			sendMessage({"data":"save_settings", "settings" : settings}, function(){});
+			hide();		
+		}
+	);	
+}
+
+function hide()
+{
+	$("#charm_quora").fadeOut();
+}
+
+function isURLBlocked(settings)
+{
+	url = location.host;
+	if(location.protocol == "https:" && settings.setting2 == true)
 	{
-		settings = {"setting1" : false};
-	}else
-	{
-		settings = {"setting1" : true};
+		return true;
 	}
-	sendMessage({"data":"save_settings", "settings" : settings}, function(){});	
-	return false;
+	
+	domain = location.hostname;
+	
+	domain = domain.replace(/www./i, "");
+	
+	domain2 = "\\*."+domain;
+	
+	split = domain.split(".");
+	
+	domain3 = domain.replace(split[0], "\\*");
+	
+	blockUrls = settings.block_url.replace(/www./i, "");
+	blockUrls = blockUrls.replace(/http:/gi, "");
+	blockUrls = blockUrls.replace(/https:/gi, "");
+	blockUrls = blockUrls.replace(/\//g, "");
+	
+	
+	//domain = domain.replace(/\./g, "\\.");
+	domain2 = domain2.replace(/\./g, "\\.");
+	domain3 = domain3.replace(/\./g, "\\.");
+	
+	
+	try
+	{
+		var regex1 = new RegExp("^"+domain+"$","im");
+		var regex2 = new RegExp("^"+domain2+"$","im");
+		var regex3 = new RegExp("^"+domain3+"$","im");
+		
+		
+		if((blockUrls.match(regex1) != null) || (blockUrls.match(regex2) != null) || (blockUrls.match(regex3) != null))
+		{
+			return true;
+		}
+	
+		return false;
+	}catch(e)
+	{
+		return true;
+	}
 }
 

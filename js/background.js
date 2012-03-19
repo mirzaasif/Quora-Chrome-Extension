@@ -218,7 +218,7 @@ function getRecoomendationSuccess(data, sendResponse)
 
 function getRecommendation(title, sendResponse)
 {
-	if(title == "")
+	if(title == "" || title == null)
 	{
 		return;
 	}
