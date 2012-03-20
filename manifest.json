@@ -1,6 +1,6 @@
 {
   "name": "Charm for Quora",
-  "version": "2.0",
+  "version": "1.0",
   "description": "Charm is a Chrome extension for Quora. You can post, search, view notifications directly from the extension.",
   "browser_action": {
     "default_icon": "images/quora_16.png",

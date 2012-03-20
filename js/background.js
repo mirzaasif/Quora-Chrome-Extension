@@ -1,56 +1,42 @@
 var result = null;
-var xhr = null;
-var xhrTimeout = null;
 var lastUpdate = 0;
 var lastException = null;
 		
 function checkLogin()
 {
-	xhr = new XMLHttpRequest();
-	url = "http://api.quora.com/api/logged_in_user?fields=inbox,notifs"+"&rand="+Math.random();
-	xhr.open("GET", url, true);
-	xhr.onreadystatechange = function() {
-		if (xhr.readyState == 4) {
-			clearTimeout(xhrTimeout);
-		    try
+	url = "http://api.quora.com/api/logged_in_user?fields=inbox,notifs";
+	$.ajax({
+	  url: url,
+	  cache: false,
+	  dataType: "text",
+	  success: function(html)
+		  {
+	   		try
 			{
-				result = JSON.parse(xhr.responseText.match(/{.*}/));
+				result = JSON.parse(html.match(/{.*}/));
 			}catch(ex)
 			{
 				lastException = ex;
-				result = null;
 			}finally
 			{
 				update();
-				setTimeout("checkLogin();", 30000);
 			}  	   
-		}
-	}
-	var xhrTimeout = setTimeout("ajaxTimeout();", 30000);
-		xhr.send();
+		 },
+	 error: function(jqXHR, textStatus, errorThrown)
+	 	{
+	 	},
+	 timeout: 15000
+	});
 }
-			
-function ajaxTimeout()
-{	
-	xhr.abort();
-	setTimeout("checkLogin();", 30000);
-	update();
-}	
 			
 function live()
 {
-	d = new Date();
-	now = d.getTime();
-	
-	if(now - lastUpdate > (1000 * 60 * 5))
-	{
-		checkLogin();
-	}
+	checkLogin();
 }
 			
 function userNotLoggedIn()
 {
-	updateBadgeText("");
+	//updateBadgeText("");
 }
 			
 function userLoggedIn()
@@ -149,8 +135,6 @@ function searchOnQuora(topic)
 	create = {"url": url};
 	chrome.tabs.create(create);
 }
-
-
 
 function getRecoomendationSuccess(data, sendResponse)
 {
@@ -251,7 +235,7 @@ function getRecommendation(title, sendResponse)
 			
 function onLoad()
 {
-	setInterval(live, 1000);
+	setInterval(live, 30000);
 	chrome.extension.onRequest.addListener(
 	function(request, sender, sendResponse) 
 	{	

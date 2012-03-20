@@ -35,6 +35,7 @@ function hide()
         	views[corey].close();																
         }
     }
+    result = null;
 }
 
 function hideNotification()
