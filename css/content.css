@@ -52,6 +52,7 @@
 {
 	color: #19558D;
 	font-weight:normal;
+	text-decoration:none;
 }
 
 .result_item
@@ -62,6 +63,8 @@
 .link
 {
 	font-size:12px;
+	font-weight:normal;
+	text-decoration:none;
 }
 
 .link:hover
