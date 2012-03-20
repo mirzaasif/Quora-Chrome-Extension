@@ -115,7 +115,11 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse)
 		{
 			if(!urlBlock && pageTitle != null)
 			{
-				response = {"response":pageTitle}
+				response = {"response":pageTitle};
+				sendResponse(response);	
+			}else
+			{
+				response = {"response":""};
 				sendResponse(response);	
 			}
 		}else if(request.request == "post")

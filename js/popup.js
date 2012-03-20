@@ -1,4 +1,5 @@
 var result = null;
+var recommendedLinksNumber = 0;
 
 function openLink(link)
 {
@@ -40,7 +41,10 @@ function hideNotification()
 {
 	$("#notifications").css('display','none');
 	//$("#recommendations").slideDown("fast");
-	$("#recommendations").css("display", "block");
+	if(recommendedLinksNumber > 0)
+	{
+		$("#recommendations").css("display", "block");	
+	}
 }
 
 function showNotification()
@@ -178,6 +182,10 @@ function showRecommendationLink()
 		chrome.tabs.sendRequest(tab.id, request, function(response)
 		{
 			title = response.response;
+			if(title == null || title == undefined || title == "")
+			{
+				return;
+			}
 			try
 			{
 				message = {"data" : "recommendation", "title" : title};
@@ -204,6 +212,7 @@ function showRecommendationLink()
 
 						if(count > 0)
 						{
+							recommendedLinksNumber = count;
 							$("#recommendation_content").html(html);
 							//$("#recommendations").slideDown("fast");
 							$("#recommendations").css("display", "block");	

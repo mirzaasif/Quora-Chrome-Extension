@@ -262,6 +262,7 @@ function onLoad()
 	    else if(request.data == "search")
 	    {
 	    	searchOnQuora(request.query);
+	    	sendResponse({});
 	    }
 	    else if(request.data == "post")
 	    {
@@ -273,7 +274,7 @@ function onLoad()
 	    		{
 	    			postToQuora(tab.url);
 	    		}
-				
+				sendResponse({});
 		    });
 	    }
 	    else if(request.data == "recommendation")
@@ -286,6 +287,7 @@ function onLoad()
 	    }else if(request.data == "save_settings")
 	    {
 	    	updateSettings(request.settings);
+	    	sendResponse({});
 	    }
 	    else
 	    {
