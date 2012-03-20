@@ -106,7 +106,6 @@ function update()
 		{
 			$("#item_notification_count").css("display", "none");
 			$("#notifications").css("display", "none");
-			$("#notification_content").html("");
 		}
 		
 	}else
@@ -129,6 +128,7 @@ function update()
 function showNotifications()
 {
 	var html = "";
+	var count = 0;
 	for (i = 0; i < result.notifs.unseen.length; i++)
 	{
 		html += "<div class='separator'>&nbsp;</div>";	
@@ -136,23 +136,29 @@ function showNotifications()
 		html += "<div class='separator'>&nbsp;</div>";
 		html += "<div class='separator'>&nbsp;</div>";
 		html += "<div class='separator' style='border-top:1px solid #C7C7C7;'>&nbsp;</div>";
+		count++;
 	}	
 	
-	$("#notification_content").html(html);
-	//$("#notifications").css("display", "block");
-	
-	$("#notification_content a").each(
-		function()
-		{
-			if($(this).attr("href") == "#") //this element for action button. we dont need it in extension
+	if (count > 0)
+	{
+		$("#notification_content").html(html);
+		$("#notification_content a").each(
+			function()
 			{
-				$(this).remove();
-			}else
-			{
-				$(this).click(function(){openFullLink($(this).attr("href"))});	
+				if($(this).attr("href") == "#") //this element for action button. we dont need it in extension
+				{
+					$(this).remove();
+				}else
+				{
+					$(this).click(function(){openFullLink($(this).attr("href"))});	
+				}
 			}
-		}
-	);
+		);
+	}else
+	{
+		html = "<div>There aren't any notifications at this moment.</div>";
+		$("#notification_content").html(html);	
+	}
 }
 
 function showProfile()
