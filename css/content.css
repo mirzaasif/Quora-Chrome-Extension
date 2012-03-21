@@ -5,6 +5,9 @@
 	font-family: "Helvetica Neue",Helvetica,Arial,default;
 	font-weight:normal;
 	text-decoration:none;
+	padding:0px;
+	margin:0px;
+	background-color: #F9F9F9;
 }
 .charm_quora
 {
@@ -23,28 +26,28 @@
 	z-index: 999;
 }
 
-.charm_quora .title
+.charm_quora .charm_quora_title
 {
 	padding-bottom: 5px;
 	border-bottom: 1px solid #C7C7C7;
 }
 
-.charm_quora .result
+.charm_quora .charm_result
 {
 	padding: 5px 0px;
 }
 
-.charm_quora .result .result_item
+.charm_quora .charm_result .charm_result_item
 {
 	padding-bottom: 4px;
 }
 
-.charm_quora .result_item
+.charm_quora .charm_result_item
 {
 	cursor: pointer;
 }
 
-.charm_quora .result_item:hover
+.charm_quora .charm_result_item:hover
 {
 	text-decoration: underline;
 }
@@ -56,34 +59,41 @@
 	text-decoration:none;
 }
 
-.charm_quora .result_item
+.charm_quora .charm_result_item
 {
 	color: #19558D;	
 }
 
-.charm_quora .link
+.charm_quora .charm_quora_link
 {
 	font-size:12px;
 	font-weight:normal;
 	text-decoration:none;
 	color: #538DC2;
+	display:inline;
 }
 
-.charm_quora .link_alt
+.charm_quora .charm_quora_link_alt
 {
 	font-size:12px;
 	font-weight:normal;
 	text-decoration:none;
 	color: #AAA;
+	display:inline;
 }
 
-.charm_quora .link:hover
+.charm_quora_link::after, .charm_quora_link_alt::after 
+{
+	content: "";
+}
+
+.charm_quora .charm_quora_link:hover
 {
 	text-decoration: underline;
 	color: #19558D;
 }
 
-.charm_quora .link_alt:hover
+.charm_quora .charm_quora_link_alt:hover
 {
 	color: #538DC2;
 	text-decoration: underline;	
