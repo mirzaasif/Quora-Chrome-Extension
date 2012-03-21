@@ -1,0 +1,21 @@
+Charm for Quora is a Chrome extension. It has following features
+
+- Shows recommended contents on Quora based on current browser page.
+- Shows recommended board at Quora to post a url on page.
+- Shows if user is logged in to Quora.
+- Shows unseen notification and message numbers.
+- Shows newest notifications.
+- Provides features to search on Quora from extension.
+- Provides features to post current page to Quora from extension and context menu.
+- Provides features to search on Quora on selected text from context menu.
+- Provides features to post image on Quora on selected image from context menu.
+- Provides features to post URL on Quora on selected URL from context menu.
+
+How can you add this extension?
+
+You can add this extension to Chrome by following steps
+
+1) Go to Chrome -> Customize -> Tools -> Extensions.
+2) Check on developer mode.
+3) Load unpacked extension.
+4) Select Quora-Chrome-Extension folder.
