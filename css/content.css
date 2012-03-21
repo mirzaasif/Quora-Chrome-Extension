@@ -52,7 +52,7 @@
 	text-decoration: underline;
 }
 
-.charm_quora .charm_quora a
+.charm_quora .charm_result_item
 {
 	color: #19558D;
 	font-weight:normal;
@@ -82,10 +82,12 @@
 	display:inline;
 }
 
-.charm_quora_link::after, .charm_quora_link_alt::after 
+.charm_quora_link::after, .charm_quora_link_alt::after  
 {
 	content: "";
 }
+
+
 
 .charm_quora .charm_quora_link:hover
 {

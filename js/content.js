@@ -69,7 +69,7 @@ function handleBoardRecommendationResponse(response)
 		
 			if(url.toString().toLowerCase() != documentUrl.toString().toLowerCase())
 			{
-				div = "<a href='"+url+"' target='_blank' title='Open "+name+" in a separate tab'><div class='charm_result_item' id='result_item_"+count+"' data-name='"+name+"'>"+name+"</div></a>";
+				div = "<a class='charm_result_item' href='"+url+"' target='_blank' title='Open "+name+" in a separate tab'><div class='charm_result_item' id='result_item_"+count+"' data-name='"+name+"'>"+name+"</div></a>";
 				//div = "<div class='result_item' id='result_item_"+count+"' data-name='"+name+"'>"+name+"</div>";
 				$(".charm_quora #charm_result").append(div);
 				//$("#result_item_"+count).click(function(event){postQuora(event);});
