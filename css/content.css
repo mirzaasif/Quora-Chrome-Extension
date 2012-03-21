@@ -3,6 +3,8 @@
 	line-height:16px;
 	color: #333;
 	font-family: "Helvetica Neue",Helvetica,Arial,default;
+	font-weight:normal;
+	text-decoration:none;
 }
 .charm_quora
 {
@@ -13,7 +15,7 @@
 	overflow:auto;
 	top:200px;
 	font-family: "Helvetica Neue",Helvetica,Arial,default;
-	background-color: #F7F7F7;
+	background-color: #F9F9F9;
 	border-radius: 10px;
 	border: 1px solid #A7A7A7;
 	padding: 10px;
@@ -23,7 +25,6 @@
 
 .charm_quora .title
 {
-	font-weight:bold;
 	padding-bottom: 5px;
 	border-bottom: 1px solid #C7C7C7;
 }
