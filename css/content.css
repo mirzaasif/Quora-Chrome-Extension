@@ -38,29 +38,29 @@
 	padding-bottom: 4px;
 }
 
-.result_item
+.charm_quora .result_item
 {
 	cursor: pointer;
 }
 
-.result_item:hover
+.charm_quora .result_item:hover
 {
 	text-decoration: underline;
 }
 
-.charm_quora a
+.charm_quora .charm_quora a
 {
 	color: #19558D;
 	font-weight:normal;
 	text-decoration:none;
 }
 
-.result_item
+.charm_quora .result_item
 {
 	color: #19558D;	
 }
 
-.link
+.charm_quora .link
 {
 	font-size:12px;
 	font-weight:normal;
@@ -68,7 +68,7 @@
 	color: #538DC2;
 }
 
-.link_alt
+.charm_quora .link_alt
 {
 	font-size:12px;
 	font-weight:normal;
@@ -76,19 +76,19 @@
 	color: #AAA;
 }
 
-.link:hover
+.charm_quora .link:hover
 {
 	text-decoration: underline;
 	color: #19558D;
 }
 
-.link_alt:hover
+.charm_quora .link_alt:hover
 {
 	color: #538DC2;
 	text-decoration: underline;	
 }
 
-#charm_set
+.charm_quora #charm_set
 {
 	height:23px;
 	width:120px;

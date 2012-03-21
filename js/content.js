@@ -86,14 +86,12 @@ function handleBoardRecommendationResponse(response)
 /*
 function postQuora(event)
 {
-	alert("post");
 	name = $(event.currentTarget).attr("data-name");
 	sendMessage({"data":"post", "name": name}, function(){});	
 }
 */
 function postQuora()
 {
-	alert("post");
 	sendMessage({"data":"post"}, function(){});	
 }
 
