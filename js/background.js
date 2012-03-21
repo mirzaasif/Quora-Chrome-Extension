@@ -123,10 +123,30 @@ function postToQuora(url)
 	window.open(link,'_blank','toolbar=0,scrollbars=no,resizable=1,status=1,width=430,height=400');	
 }
 
+
 function postToQuoraWithGroupName(url, name)
 {
 	link = "http://www.quora.com/board/bookmarklet?v=1&url="+encodeURIComponent(url);	
-	postWindow = window.open(link,'_blank','toolbar=0,scrollbars=no,resizable=1,status=1,width=430,height=400');
+	
+	object = {url: link, width: 430, height: 400, focused: true, type: "popup"  };
+
+	chrome.windows.create(object, function(win)
+		{
+			chrome.tabs.getSelected(win.id, function(tab) 
+		    	{
+		    		setTimeout(function()
+		    		{
+		    			request = {"request":"post", "name":name};
+						chrome.tabs.sendRequest(tab.id, request, function(response)
+							{
+								
+							}
+						);
+		    		}, 2000);
+				}
+			);
+		}
+	);
 }
 			
 function searchOnQuora(topic)

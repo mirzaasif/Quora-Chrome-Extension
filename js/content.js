@@ -9,7 +9,7 @@ function onLoad()
 		closeIcon = chrome.extension.getURL("images/close.png");
 		blockIcon = chrome.extension.getURL("images/block.png");
 		//$("body").append("<div class='charm_quora' id='charm_quora'><div class='title'>Recommended Boards on Quora</div><div id='result' class='result'></div><div style='text-align:center; padding-bottom:4px;'><img src='"+closeIcon+"' width='16' title='Hide' style='cursor:pointer;' id='charm_hide'/>&nbsp;&nbsp;<img src='"+blockIcon+"' width='16' title='Never show recommendations on this site.' style='cursor:pointer;' id='charm_block'/></div><div style='text-align:center; color:#666; font-size:10px; clear:both;'>Charm for Quora</div></div>");
-		$("body").append("<div class='charm_quora' id='charm_quora'><div class='title'>Recommended Boards on Quora</div><div id='result' class='result'></div><div style='text-align:center; padding-bottom:4px;'><label id='charm_post' class='link' style=' cursor:pointer;'>[Post]</label>&nbsp;&nbsp;<label id='charm_hide' class='link' style=' cursor:pointer;'>[Hide]</label></div><div style='text-align:center; padding-bottom:4px; cursor:pointer;' class='link' id='charm_block'>[Block for this site]</div><div style='text-align:center; color:#666; font-size:10px; clear:both;'>Charm for Quora</div></div>");
+		$("body").append("<div class='charm_quora' id='charm_quora'><div class='title'>Recommended Boards on Quora</div><div id='result' class='result'></div><div style='text-align:center; padding-bottom:4px;'><label id='charm_post' class='link' style=' cursor:pointer;' title='Post this page to a board on Quora'>Post</label><span style='color:#CCC;'> • </span><label id='charm_hide' class='link_alt' style=' cursor:pointer;' title='Hide this recommendation'>Hide</label></div><div style='text-align:center; padding-bottom:4px; cursor:pointer;' class='link_alt' id='charm_block' title='Add the domain for this page into the recommendation block list'>Block for this site</div><div style='text-align:center; color:#666; font-size:10px; clear:both;'>Charm for Quora</div></div>");
 		left = (parseInt($(window).width())-150);
 		$("#charm_quora").css("left", left);
 		$("#charm_block").click(blockSite);
@@ -70,6 +70,7 @@ function handleBoardRecommendationResponse(response)
 			if(url.toString().toLowerCase() != documentUrl.toString().toLowerCase())
 			{
 				div = "<a href='"+url+"' target='_blank' title='Open "+name+" in a separate tab'><div class='result_item' id='result_item_"+count+"' data-name='"+name+"'>"+name+"</div></a>";
+				//div = "<div class='result_item' id='result_item_"+count+"' data-name='"+name+"'>"+name+"</div>";
 				$(".charm_quora #result").append(div);
 				//$("#result_item_"+count).click(function(event){postQuora(event);});
 				count++;	
@@ -82,10 +83,17 @@ function handleBoardRecommendationResponse(response)
 		$(".charm_quora").css("display", "block");
 	}
 }
-
+/*
+function postQuora(event)
+{
+	alert("post");
+	name = $(event.currentTarget).attr("data-name");
+	sendMessage({"data":"post", "name": name}, function(){});	
+}
+*/
 function postQuora()
 {
-	//name = $(event.currentTarget).attr("data-name");
+	alert("post");
 	sendMessage({"data":"post"}, function(){});	
 }
 
@@ -124,7 +132,12 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse)
 			}
 		}else if(request.request == "post")
 		{
-			
+			$(document).ready(function() 
+				{
+					name = request.name;
+					$(".question_box").focus().val(name).keyup();
+				}
+			);
 		}
 	}
 );
@@ -138,7 +151,7 @@ function blockSite()
 			settings.block_url = domain + "\n" + settings.block_url;
 			sendMessage({"data":"save_settings", "settings" : settings}, function(){});
 			$(".charm_quora #result").append(domain+" has been blocked. You can undo this action from settings.");
-			setTimeout("hide()", 10000);		
+			setTimeout("hide()", 5000);		
 		} 
 	);	
 }

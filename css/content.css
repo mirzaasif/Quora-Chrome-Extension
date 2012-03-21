@@ -65,11 +65,27 @@
 	font-size:12px;
 	font-weight:normal;
 	text-decoration:none;
+	color: #538DC2;
+}
+
+.link_alt
+{
+	font-size:12px;
+	font-weight:normal;
+	text-decoration:none;
+	color: #AAA;
 }
 
 .link:hover
 {
 	text-decoration: underline;
+	color: #19558D;
+}
+
+.link_alt:hover
+{
+	color: #538DC2;
+	text-decoration: underline;	
 }
 
 #charm_set
