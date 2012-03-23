@@ -13,9 +13,14 @@ Charm for Quora is a Chrome extension. It has following features
 
 How can you add this extension?
 
-You can add this extension to Chrome by following steps
+Download from Chrome Web Store 
 
-1) Go to Chrome -> Customize -> Tools -> Extensions.
-2) Check on developer mode.
-3) Load unpacked extension.
-4) Select Quora-Chrome-Extension folder.
+https://chrome.google.com/webstore/detail/inhlliopcfhaeccjocbonckfgniknfac
+
+or You can add this extension to Chrome by following steps
+
+1) Download code.
+2) Go to Chrome -> Customize -> Tools -> Extensions.
+3) Check on developer mode.
+4) Load unpacked extension.
+5) Select Quora-Chrome-Extension folder.
