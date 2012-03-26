@@ -148,7 +148,7 @@ function blockSite()
 			settings = response.settings;
 			settings.block_url = domain + "\n" + settings.block_url;
 			sendMessage({"data":"save_settings", "settings" : settings}, function(){});
-			$(".charm_quora #result").append(domain+" has been blocked. You can undo this action from settings.");
+			$(".charm_quora #charm_result").append(domain+" has been blocked. You can undo this action from settings.");
 			setTimeout("hide()", 5000);		
 		} 
 	);	
