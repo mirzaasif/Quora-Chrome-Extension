@@ -1,6 +1,6 @@
 {
   "name": "Charm for Quora",
-  "version": "1.1",
+  "version": "1.1.2",
   "description": "Charm for Quora shows recommended contents and boards. You can post, search, view notifications directly from the extension.",
   "browser_action": {
     "default_icon": "images/quora_16.png",
