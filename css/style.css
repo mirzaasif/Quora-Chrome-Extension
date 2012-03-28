@@ -244,3 +244,18 @@ body
     padding: 3px 10px;
     text-align: center; 
 }
+
+.link
+{
+	font-size:12px;
+	font-weight:normal;
+	text-decoration:none;
+	color: #538DC2;
+	display:inline;
+}
+
+.link:hover
+{
+	text-decoration: underline;
+	color: #19558D;
+}
