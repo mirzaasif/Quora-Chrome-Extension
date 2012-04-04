@@ -20,7 +20,7 @@ function checkCache(title)
 			return null;
 		}else
 		{
-			item.data;	
+			return item.data;	
 		}	
 	}catch(e)
 	{
