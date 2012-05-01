@@ -1,6 +1,7 @@
 var result = null;
 var lastUpdate = 0;
 var lastException = null;
+var updateInterval = 60000;
 		
 function checkLogin()
 {
@@ -255,7 +256,7 @@ function getRecommendation(title, sendResponse)
 			
 function onLoad()
 {
-	setInterval(live, 30000);
+	setInterval(live, updateInterval);
 	chrome.extension.onRequest.addListener(
 	function(request, sender, sendResponse) 
 	{	
